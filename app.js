@@ -1,13 +1,33 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const port = process.env.PORT || 3001;
+const { getHelloData } = require('./services/helloDataService.js')
+const cors = require("cors");
 
-app.get("/", (req, res) => res.type('html').send(html));
 
+app.use(cors({origin:process.env.APP}))
+app.use(express.json());
+console.log(process.env.APP)
+app.get('/', async (req, res) => {
+  const helloString = await getHelloData()
+  console.log(helloString)
+  res.send('ok')
+})
+
+// File: ./app.js
+
+app.get('/api/hello', async (req, res) => {
+  const helloString = await getHelloData()
+  console.log(new Date(), helloString)
+  res.json({ helloString });
+})
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
+
+require('./config/mongodb')
 
 const html = `
 <!DOCTYPE html>
