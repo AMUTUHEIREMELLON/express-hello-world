@@ -6,4 +6,8 @@ async function getHelloData () {
     return hellos[randomIndex].HelloString
   }
 
-  module.exports = { getHelloData }
+  function addHelloData (newHelloString){
+    const newSchema = new Hello({HelloString: newHelloString});
+    newSchema.save();
+  };
+  module.exports = { getHelloData, addHelloData }
