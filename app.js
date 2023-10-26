@@ -24,7 +24,11 @@ app.get('/api/hello', async (req, res) => {
 
 app.post('/api/hello', async (req, res) => {
   const { newHelloString } = req.body;
-  addHelloData(newHelloString);
+  try {
+    await addHelloData(newHelloString);
+  } catch (error) {
+    return res.status(500).send(error)
+  }
   res.send("ok");
 })
 

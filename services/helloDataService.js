@@ -6,9 +6,13 @@ async function getHelloData () {
   return hellos[randomIndex].HelloString
 }
 
-function addHelloData (newHelloString) {
-  const newSchema = new Hello({ HelloString: newHelloString });
-  newSchema.save();
+async function addHelloData (newHelloString) {
+  try {
+    const newSchema = new Hello({ HelloString: newHelloString });
+    await newSchema.save();
+  } catch (error) {
+    throw error
+  }
 };
 
 module.exports = { getHelloData, addHelloData }
