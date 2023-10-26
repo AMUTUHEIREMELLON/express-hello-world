@@ -1,36 +1,33 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const port = process.env.PORT || 3001;
-const { getHelloData, addHelloData } = require('./services/helloDataService.js')
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const { getHelloData, addHelloData } = require('./services/helloDataService.js')
+const port = process.env.PORT || 3001;
 
 app.use(cors({origin:process.env.APP}))
+
 app.use(express.json());
+
 app.use(bodyParser.json());
-console.log(process.env.APP)
+
 app.get('/', async (req, res) => {
   const helloString = await getHelloData()
-  console.log(helloString)
   res.send('ok')
 })
 
-// File: ./app.js
-
 app.get('/api/hello', async (req, res) => {
   const helloString = await getHelloData()
-  console.log(new Date(), helloString)
   res.json({ helloString });
 });
 
 app.post('/api/hello', async (req, res) => {
   const { newHelloString } = req.body;
-  console.log(newHelloString);
   addHelloData(newHelloString);
   res.send("ok");
 })
+
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
